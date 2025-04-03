@@ -1,5 +1,7 @@
 "use client";
-import Image from "next/image";
+import React from "react";
+// import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 import Todo from "./Components/Todo";
 export default function Home() {
@@ -15,19 +17,19 @@ export default function Home() {
     setFormDaata((form) => ({ ...form, [name]: value }));
     console.log(formData);
   };
-  const handleSubmit = (e)=>{
-    e.preventDefault
-    try{
-
-    }catch(e){
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try { 
+      toast.success("Success")
+    } catch (e) {
+      toast.error("error");
     }
-
-  }
+  };
   return (
     <>
+      <ToastContainer  theme="dark"/>
       <form
-        onChange={handleSubmit}
+        onSubmit={handleSubmit}
         className="flex items-start flex-col gap-2 w-[80%] max-w-[600px] mt-24 px-2 mx-auto"
         action=""
       >
