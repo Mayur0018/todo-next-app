@@ -9,9 +9,9 @@ export async function GET() {
   return NextResponse.json({ msg: "Get Method Hit" });
 }
 export async function POST(request) {
-  const { titile, description } = await request.join();
+  const { title, description } = await request.json();
   await TodoModel.create({
-    titile,
+    title,
     description,
   });
   return NextResponse.json({ msg: "Get Method Hit" });
