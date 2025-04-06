@@ -1,6 +1,7 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 // import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 import Todo from "./Components/Todo";
@@ -9,6 +10,17 @@ export default function Home() {
     title: "",
     description: "",
   });
+
+  const [todoData, setTodosData] = useState([]);
+  const fetchfunc = async () => {
+    const response = await axios.get("/api");
+    setTodosData(response.data.todos);
+  };
+
+  useEffect(() => {
+    fetchfunc();
+  }, []);
+console.log(todoData);
 
   const handleOnchange = (e) => {
     const name = e.target.name;
@@ -19,15 +31,22 @@ export default function Home() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try { 
-      toast.success("Success")
+    try {
+      // api code
+      const response = await axios.post("/api", formData);
+      console.log(response);
+      toast.success(response.data.msg);
+      setFormDaata({
+        title: "",
+        description: "",
+      });
     } catch (e) {
       toast.error("error");
     }
   };
   return (
     <>
-      <ToastContainer  theme="dark"/>
+      <ToastContainer theme="dark" />
       <form
         onSubmit={handleSubmit}
         className="flex items-start flex-col gap-2 w-[80%] max-w-[600px] mt-24 px-2 mx-auto"
@@ -36,14 +55,12 @@ export default function Home() {
         <input
           type="text"
           name="title"
-          value={formData.title}
           placeholder="Enter Title"
           className="px-3 py-2 border-2 w-full"
           onChange={handleOnchange}
         />
         <textarea
           name="description"
-          value={formData.description}
           placeholder="Enter Description"
           className="px-3 py-2 border-2 w-full"
           onChange={handleOnchange}
@@ -75,10 +92,17 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            <Todo title={formData.title} />
-            <Todo description={formData.description} />
-            <Todo />
-            <Todo />
+            {todoData.map((item, index) => {
+              return (
+                <Todo
+                  key={index}
+                  title={item.title}
+                  description={item.description}
+                  complete={item.isCompleted}
+                  mongoId = {item._id}
+                />
+              );
+            })}
           </tbody>
         </table>
       </div>

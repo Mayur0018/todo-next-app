@@ -6,7 +6,8 @@ const loaddb = async () => {
 };
 loaddb();
 export async function GET() {
-  return NextResponse.json({ msg: "Get Method Hit" });
+  const Todos = await TodoModel.find({});
+  return NextResponse.json({ todos: Todos});
 }
 export async function POST(request) {
   const { title, description } = await request.json();
@@ -14,5 +15,5 @@ export async function POST(request) {
     title,
     description,
   });
-  return NextResponse.json({ msg: "Get Method Hit" });
+  return NextResponse.json({ msg: "Todo Created" });
 }
