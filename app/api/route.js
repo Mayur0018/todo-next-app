@@ -24,6 +24,10 @@ return NextResponse.json({msg: "Todo Deleted"})
 }
 export async function PUT(request) {
   const  mongoId = await request.nextUrl.searchParams.get("mongoId")
-  await TodoModel.findByIdAndDelete(mongoId)
-  return NextResponse.json({msg: "Todo Deleted"}) 
+  await TodoModel.findByIdAndUpdate(mongoId,{
+    $set:{
+      isCompleted: true,
+    }
+  })
+  return NextResponse.json({msg: "Todo Completed"}) 
   }

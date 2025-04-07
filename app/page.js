@@ -27,10 +27,20 @@ export default function Home() {
     fetchfunc()
   }
 
+const completeTodo = async (id)=>{
+  const response = await axios.put("/api",{},{
+    params:{
+      mongoId:id
+    }
+  })
+  toast.success(response.data.msg)
+  fetchfunc()
+}
+
+
   useEffect(() => {
     fetchfunc();
   }, []);
-console.log(todoData);
 
   const handleOnchange = (e) => {
     const name = e.target.name;
@@ -114,6 +124,7 @@ console.log(todoData);
                   complete={item.isCompleted}
                   mongoId = {item._id}
                   deleteTodo = {deleteTodo}
+                  completeTodo={completeTodo}
                 />
               );
             })}
